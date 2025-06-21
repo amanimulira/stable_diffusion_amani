@@ -1,6 +1,6 @@
 # stable_diffusion_amani
 
-## Best way to learn is be doing
+## Best way to learn is by doing
 
 Latent diffusion models (stable diffusion) from scratch in PyTorch. 
 
