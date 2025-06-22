@@ -4,10 +4,10 @@
 
 Latent diffusion models (stable diffusion) from scratch in PyTorch. 
 
-Classifier-Free Guidance
-Text-to-image
-Image-to-image
-inpainting
+- Classifier-Free Guidance
+- Text-to-image
+- Image-to-image
+- Inpainting
 
 what is a generative model?
 
