@@ -11,7 +11,7 @@ Latent diffusion models (stable diffusion) from scratch in PyTorch.
 
 what is a generative model?
 
-- a generative model learns a probability distribution of the data set such that we can then sampel from the distribution to create new instances of data. 
+- a generative model learns a probability distribution of the data set such that we can then sample from the distribution to create new instances of data. 
 
 - model the data as a probability distribution network then learns the parameters; that can then be sampled across to generate new data.
 
