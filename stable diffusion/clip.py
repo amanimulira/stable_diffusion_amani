@@ -5,11 +5,11 @@ from attention import SelfAttention
 
 class CLIPEmbedding(nn.Module):
 
-    def __init__(self, n_vocab: int, n_embd: int, n_tokens: int):
+    def __init__(self, n_vocab: int, n_embd: int, n_token: int):
         super().__init__()
 
         self.token_embedding = nn.Embedding(n_vocab, n_embd)
-        self.position_embedding = nn.Parameter(torch.zeros(n_tokens, n_embd))
+        self.position_embedding = nn.Parameter(torch.zeros(n_token, n_embd))
 
     def forward(self, tokens):
         # (Batch_Size, Seq_Len) -> (Batch_Size, Seq_Len, Dim)
@@ -26,11 +26,11 @@ class CLIPLayer(nn.Module):
 
         self.layernorm_1 = nn.LayerNorm(n_embd)
         self.attention = SelfAttention(n_head, n_embd)
-        self.layernorm_1 = nn.LayerNorm(n_embd)
+        self.layernorm_2 = nn.LayerNorm(n_embd)
         self.linear_1 = nn.Linear(n_embd, 4 * n_embd)
         self.linear_2 = nn.Linear(4 * n_embd, n_embd)
 
-    def forward(self, x: torch):
+    def forward(self, x: torch.Tensor):
         # (Batch_Size, Seq_Len, Dim)
         
         residue = x
@@ -39,7 +39,7 @@ class CLIPLayer(nn.Module):
 
         x = self.layernorm_1(x)
 
-        x = self.attention(x, causal_mask = True)
+        x = self.attention(x, casual_mask = True)
 
         x += residue
 
@@ -62,9 +62,10 @@ class CLIPLayer(nn.Module):
 class CLIP(nn.Module):
 
     def __init__(self):
+        super().__init__()
         self.embedding = CLIPEmbedding(49408, 768, 77)
 
-        self,layers = nn.Module([
+        self.layers = nn.ModuleList([
             CLIPLayer(12, 768) for i in range(12)
         ])
 
