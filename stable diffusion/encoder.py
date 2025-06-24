@@ -47,7 +47,7 @@ class VAE_Encoder(nn.Sequential):
             VAE_ResidualBlock(512, 512),
 
             # (Batch_Size, 512, Height / 8, Width / 8) -> (Batch_Size, 512, Height / 8, Width / 8)
-            VAE_ResidualBlock(512),
+            VAE_AttentionBlock(512),
 
             # (Batch_Size, 512, Height / 8, Width / 8) -> (Batch_Size, 512, Height / 8, Width / 8)
             VAE_ResidualBlock(512, 512),

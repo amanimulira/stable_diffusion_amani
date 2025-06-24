@@ -37,17 +37,20 @@ class VAE_ResidualBlock(nn.Module):
         x = self.conv_2(x)
 
         return x + self.residual_layer(residue)
+
+
     
 class VAE_AttentionBlock(nn.Module):
 
     def __init__(self, channels: int):
+        
         super().__init__()
         self.groupnorm = nn.GroupNorm(32, channels)
         self.attention = SelfAttention(1, channels)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # x: (Batch_Size, Features, Height, Width)
 
+        # x: (Batch_Size, Features, Height, Width)
         residue = x
 
         n, c, h, w = x.shape
@@ -81,7 +84,7 @@ class VAE_Decoder(nn.Sequential):
 
             VAE_ResidualBlock(512, 512),
 
-            VAE_ResidualBlock(512),
+            VAE_AttentionBlock(512),
 
             VAE_ResidualBlock(512, 512),
 
