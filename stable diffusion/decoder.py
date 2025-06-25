@@ -56,7 +56,7 @@ class VAE_AttentionBlock(nn.Module):
         n, c, h, w = x.shape
 
         # (Batch_Size, Features, Height, Width) -> (Batch_Size, Features, Height * Width)
-        x = x.view(n, c, h * w)
+        x = x.view((n, c, h * w))
         
         # (Batch_Size, Features, Height * Width) -> (Batch_Size, Height * Width, Features)
         x = x.transpose(-1, -2)
@@ -78,7 +78,7 @@ class VAE_Decoder(nn.Sequential):
 
     def __init__(self):
         super().__init__(
-            nn.Conv2d(4, 4, kernel_size=3, padding=1),
+            nn.Conv2d(4, 4, kernel_size=1, padding=1),
 
             nn.Conv2d(4, 512, kernel_size=3, padding=1),
 

@@ -29,9 +29,9 @@ def generate(
             raise ValueError("Strength must be between 0 and 1.")
         
         if idle_device:
-            to_idle: lambda x: x.to(idle_device)
+            to_idle = lambda x: x.to(idle_device)
         else:
-            to_idle: lambda x: x
+            to_idle = lambda x: x
 
         generator = torch.Generator(device=device)
         if seed is None:
@@ -64,11 +64,12 @@ def generate(
             tokens = torch.tensor(tokens, dtype=torch.long, device=device)
             # (1, 77, 768)
             context = clip(tokens)
+
         to_idle(clip)
 
         if sampler_name == "ddpm":
             sampler = DDPMSampler(generator)
-            sampler.set_inference_steps(n_inference_steps)
+            sampler.set_inference_timesteps(n_inference_steps)
         else:
             raise ValueError(f"Unkown sampler {sampler_name}")
         
@@ -139,7 +140,7 @@ def generate(
         images = decoder(latents)
         to_idle(decoder)
 
-        images = rescale(images, (-1, 1), (0, 255), clalmp=True)
+        images = rescale(images, (-1, 1), (0, 255), clamp=True)
         # (Batch_Size, Channel, Height, Width) -> (Batch_Size, Height, Width, Channel)
         images = images.permute(0, 2, 3, 1)
         images = images.to("cpu", torch.uint8).numpy()
