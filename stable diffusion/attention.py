@@ -38,7 +38,7 @@ class SelfAttention(nn.Module):
             mask = torch.ones_like(weight, dtype=torch.bool).triu(1)
             weight.masked_fill_(mask, -torch.inf)
 
-        weigth /= math.sqrt(self.d_heads)
+        weight /= math.sqrt(self.d_heads)
 
         weight = F.softmax(weight, dim=-1)
 
@@ -74,14 +74,14 @@ class CrossAttention(nn.Module):
         # y: (context): (Batch_Size, Seq_Len_KV, Dim_KV) = (Batch_Size, 77, 768)
    
         input_shape = x.shape
-        batch_size, sequenece_length, d_embed = input_shape
+        batch_size, sequence_length, d_embed = input_shape
 
         interim_shape = (batch_size, -1, self.n_heads, self.d_head)
 
         # Multiply query by Wq
         q = self.q_proj(x)
-        k = self.q_proj(y)
-        v = self.q_proj(y)
+        k = self.k_proj(y)
+        v = self.v_proj(y)
 
         q = q.view(interim_shape).transpose(1, 2)
         k = k.view(interim_shape).transpose(1, 2)
@@ -95,7 +95,7 @@ class CrossAttention(nn.Module):
 
         output = weight @ v
 
-        output = output.transpose(1, 2).continuous()
+        output = output.transpose(1, 2).contiguous()
 
         output = output.view(input_shape)
 
